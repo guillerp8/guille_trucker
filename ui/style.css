@@ -1,0 +1,72 @@
+@font-face {
+    font-family: 'bankgothic';
+    src: url('bankgothic.ttf')
+}
+body {
+    width: 100%;
+    overflow: hidden;
+}
+.text {
+    position: absolute;
+    overflow: hidden;
+    bottom: 0.9%;
+    right: 14%;
+    padding: 0;
+    margin: 0;
+    font-family: "bankgothic";
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    font-size: 0.9vw;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    background-size: cover;
+    background-color: rgba(255, 0, 0, 0.329);
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 5px;
+    animation: slideFromBottom 2s forwards;
+}
+
+.route {
+    color: rgb(255, 251, 0);
+    text-emphasis-color: rgb(255, 0, 0);
+}
+
+.background {
+    position: absolute;
+    width: 35%;
+    height: 40%;
+    top: 30%;
+    right: 33%;
+    background-color: rgba(207, 58, 38, 0.521);
+    border-radius: 5px;
+}
+
+#ui {
+    width: 100%;
+    overflow: hidden;
+}
+
+.bk-title {
+    font-family: "bankgothic";
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.startbutton {
+    position: absolute;
+    text-align: center;
+    top: 42%;
+    right: 28%;
+    font-family: "bankgothic";
+}
+
+@-webkit-keyframes slideFromBottom {
+    0% { bottom: 0%;
+        opacity: 0;}
+  
+    100% { bottom: 0.9%;
+        opacity: 1;}
+}
