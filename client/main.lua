@@ -59,7 +59,7 @@ function startJob()
 
         if dist < 3 then
             wait = 0
-            ESX.ShowFloatingHelpNotification('Presiona ~r~E~w~ para hablar con el camionero', Config.pedCoords + vector3(0,0,0+2))
+            ESX.ShowFloatingHelpNotification('Press ~r~E~w~ to speak with the trucker', Config.pedCoords + vector3(0,0,0+2))
             if IsControlJustPressed(1, 38) then
                 getMenu()
                 s = false
@@ -102,11 +102,11 @@ function startRoute(name, money, points)
         route = name; 
     })
 
-    ESX.ShowNotification('Esperate a que el jefe llegue con el camión, los suministros son aleatorios')
+    ESX.ShowNotification('Wait for the truck arrive')
     Citizen.Wait(900)
-    ESX.ShowNotification('Si hay un vehículo en el punto de entrega va a tardar más')
+    ESX.ShowNotification('If there is a vehicle at the delivery point, it will take longer')
     Citizen.Wait(900)
-    ESX.ShowNotification('Tienes un indicador abajo a la derecha que te dirá que hacer.')
+    ESX.ShowNotification('You have an indicator at the bottom right that will tell you what to do')
     while IsAnyVehicleNearPoint(Config.deliverCoords, 6.0) do
         Citizen.Wait(0)
     end
@@ -140,7 +140,7 @@ function startRoute(name, money, points)
     TaskVehicleDriveToCoordLongrange(cped, vehicle, Config.deliverCoords, 30.0, 319, 5.0)
     Citizen.Wait(Config.arriveTime)
     TaskLeaveAnyVehicle(cped, true, true)
-    ESX.ShowNotification('El jefe te ha dejado el camión, ve a recogerlo y empieza la ruta ' ..name)
+    ESX.ShowNotification('The boss has left the truck for you, go pick it up and start the route ' ..name)
 
     TaskGoToCoordAnyMeans(cped, Config.byeCoords, 0.2, 0, 0, 786603, 0xbf800000)
     
@@ -148,7 +148,7 @@ function startRoute(name, money, points)
         local ped = PlayerPedId(-1)
         if IsPedInVehicle(ped, vehicle, true) then
             if IsVehicleAttachedToTrailer(vehicle) then
-                ESX.ShowNotification('Dirigete a la ubicación marcada en el mapa')
+                ESX.ShowNotification('Go to the location marked on the map')
                 DeletePed(cped)
                 routeStartNow(name, money, points, vehicle)
                 
@@ -156,7 +156,7 @@ function startRoute(name, money, points)
             end
         end
         if not DoesEntityExist(vehicle) then
-            ESX.ShowNotification('El vehículo ha sido destruido')
+            ESX.ShowNotification('The vehicle has been destroyed')
             SendNUIMessage({
                 show = true; 
             })
@@ -196,7 +196,7 @@ function routeStartNow(name, money, points, vehicle)
                 print("yes")
                 wait = 0
                 DrawMarker(1, selectedroute[done]['x'], selectedroute[done]['y'], selectedroute[done]['z']-0.95, 0, 0, 0, 0, 0, 0, 5.0000, 5.0000, 0.6001,255,0,0, 200, 0, 0, 0, 0)
-                ESX.ShowFloatingHelpNotification('Presiona ~r~E~w~ para entregar la mercancia', vector3(selectedroute[done]['x'], selectedroute[done]['y'], selectedroute[done]['z']))
+                ESX.ShowFloatingHelpNotification('Press ~r~E~w~ to deliver the ware', vector3(selectedroute[done]['x'], selectedroute[done]['y'], selectedroute[done]['z']))
                 if dist < 10 and IsVehicleAttachedToTrailer(vehicle)  then
                     if IsControlJustPressed(1, 38) then
                         
@@ -216,7 +216,7 @@ function routeStartNow(name, money, points, vehicle)
 
             if not IsVehicleAttachedToTrailer(vehicle) then
                 SendNUIMessage({
-                    route = "Vuelve a enganchar el camión"; 
+                    route = "Hook the truck back up"; 
                 })
             else
                 SendNUIMessage({
@@ -224,7 +224,7 @@ function routeStartNow(name, money, points, vehicle)
                 })
             end
             if not DoesEntityExist(vehicle) then
-                ESX.ShowNotification('El vehículo ha sido destruido')
+                ESX.ShowNotification('The vehicle has been destroyed')
                 startJob()
                 SendNUIMessage({
                     show = true; 
@@ -239,17 +239,17 @@ function routeStartNow(name, money, points, vehicle)
 end
 
 function finishDeliver(x, y, z, money, name, vehicle)
-    ESX.ShowNotification('Vuelve a la ubicación de inicio')
+    ESX.ShowNotification('Go back to the home location')
     routeblip = AddBlipForCoord(Config.truckSpawn)
     SetBlipRoute(routeblip, true)
     SetBlipScale(routeblip, 0.8)
     SetBlipColour(routeblip, 1)
     SetBlipRouteColour(routeblip, 1)
     BeginTextCommandSetBlipName("STRING")
-    AddTextComponentString("Punto para devolver el camión")
+    AddTextComponentString("Point to return the truck")
     EndTextCommandSetBlipName(routeblip)
     SendNUIMessage({
-        route = "regresa a entregar el camión";
+        route = "return to deliver the truck";
     })
     while true do
         local pedcoords = GetEntityCoords(PlayerPedId())
@@ -258,7 +258,7 @@ function finishDeliver(x, y, z, money, name, vehicle)
 
         if dist < 5 and IsPedInVehicle(PlayerPedId(), vehicle) then
             wait = 0
-            ESX.ShowFloatingHelpNotification('Presiona ~r~E~w~ para entregar el camión', Config.truckSpawn)
+            ESX.ShowFloatingHelpNotification('Press ~r~E~w~ to deliver the truck', Config.truckSpawn)
             DrawMarker(1, Config.truckSpawn - vector3(0, 0, 0-0.95), 0, 0, 0, 0, 0, 0, 5.0000, 5.0000, 0.6001,255,0,0, 200, 0, 0, 0, 0)
             if IsControlJustPressed(1, 38) then
                 RemoveBlip(routeblip)
@@ -274,11 +274,11 @@ function finishDeliver(x, y, z, money, name, vehicle)
         end
         if not IsVehicleAttachedToTrailer(vehicle) then
             SendNUIMessage({
-                route = "Vuelve a enganchar el camión"; 
+                route = "Hook the truck back up"; 
             })
         else
             SendNUIMessage({
-                route = "regresa a entregar el camión";
+                route = "return to deliver the truck";
             })
         end
         Citizen.Wait(wait)
@@ -322,14 +322,14 @@ AddEventHandler('guille_trucker:createroute', function(name, points)
     local created = 0
     creating = true
     while creating do
-        ESX.ShowHelpNotification('Creación de ruta. Presiona ~INPUT_CONTEXT~ para añadir punto a la ruta ' ..name.. ' de un total de ' ..points)
+        ESX.ShowHelpNotification('Route creation. Press ~INPUT_CONTEXT~ to add a point to the route ' ..name.. ' with a total of ' ..points)
         if IsControlJustPressed(1, 38) then
             created = created + 1
             TriggerServerEvent('guille_trucker:addpointtoroute', name, created)
             if created == 1 then
-                ESX.ShowNotification('Has añadido un punto a ' ..name.. ' de un total de ' ..points.. '. Llevas ' ..created.. ' creado')
+                ESX.ShowNotification('You added a point to the route ' ..name.. ' with a total of ' ..points.. '. You have ' ..created.. ' created')
             else
-                ESX.ShowNotification('Has añadido un punto a ' ..name.. ' de un total de ' ..points.. '. Llevas ' ..created.. ' creados')
+                ESX.ShowNotification('You added a point to the route ' ..name.. ' with a total of ' ..points.. '. You have ' ..created.. ' created')
             end         
         end
         if created == points then
@@ -341,9 +341,9 @@ AddEventHandler('guille_trucker:createroute', function(name, points)
 end)
 
 --TriggerEvent("chat:addSuggestion", "/createroute", ("Crear una ruta para el trabajo de camionero"), {{name = ("Nombre"), help = ("Nombre de la ruta que se va a crear (sólo una palabra)")}, {name = ("Sueldo"), help = ("Dinero que se va a cobrar al hacer la ruta")}})
-TriggerEvent("chat:addSuggestion", "/addroute", ("Crear una ruta para el trabajo de camionero"), {{name = ("Puntos"), help = ("Puntos de la ruta que se va a crear (sólo números)")}, {name = ("Nombre"), help = ("Nombre de la ruta que se va a crear (sólo una palabra)")}, {name = ("Dinero"), help = ("Dinero que se va a cobrar al hacer la ruta")}})
-TriggerEvent("chat:addSuggestion", "/seeroutes", ("Ver las rutas de camionero creadas"), {})
-TriggerEvent("chat:addSuggestion", "/deleteroute", ("Borrar una ruta para del trabajo de camionero"), {{name = ("Nombre"), help = ("Nombre de la ruta que se desea borrar, revisa los nombres con /seeroutes")}})
+TriggerEvent("chat:addSuggestion", "/addroute", ("Create a route for trucker work"), {{name = ("Points"), help = ("Points of the route to be created (numbers only)")}, {name = ("Name"), help = ("Name of the path to create (just one word)")}, {name = ("Money"), help = ("Money that will be charged when doing the route")}})
+TriggerEvent("chat:addSuggestion", "/seeroutes", ("See created trucker routes"), {})
+TriggerEvent("chat:addSuggestion", "/deleteroute", ("Delete a route for trucker work"), {{name = ("Name"), help = ("Name of the route to be deleted, check the names with / seeroutes")}})
 
 -- Fin Events
 
