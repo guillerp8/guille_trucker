@@ -74,16 +74,16 @@ RegisterCommand('addroute', function(source, args)
                             ['@owner'] = xPlayer.getIdentifier(),
                             ['@money'] = money,
                         })
-                        TriggerClientEvent('esx:showNotification', source, 'Has empezado la creación de una ruta con ' ..points.. ' puntos y con el nombre ' ..name)
+                        TriggerClientEvent('esx:showNotification', source, 'You started the route creation with ' ..points.. ' points and with the name ' ..name)
                         TriggerClientEvent('guille_trucker:createroute', source, name, points)
                     else
-                        TriggerClientEvent('esx:showNotification', source, 'El valor de money tiene que ser número.')
+                        TriggerClientEvent('esx:showNotification', source, 'The value must be a number')
                     end
                 else
-                    TriggerClientEvent('esx:showNotification', source, 'El valor de nombre tiene que ser string.')
+                    TriggerClientEvent('esx:showNotification', source, 'The value must be a string')
                 end
             else
-                TriggerClientEvent('esx:showNotification', source, 'El valor de puntos tiene que ser un número')
+                TriggerClientEvent('esx:showNotification', source, 'The value must be a number')
             end
        end
 end, false)
@@ -113,9 +113,9 @@ RegisterCommand('deleteroute', function(source, args)
         MySQL.Async.execute('DELETE FROM truckerroutes WHERE name = @name', {
             ['@name'] = name   
         })
-        TriggerClientEvent('esx:showNotification', xPlayer.source, 'Has borrado la ruta con el nombre ' ..name)
+        TriggerClientEvent('esx:showNotification', xPlayer.source, 'You deleted the route ' ..name)
     else
-        TriggerClientEvent('esx:showNotification', xPlayer.source, 'No tienes permiso para usar ese comando')
+        TriggerClientEvent('esx:showNotification', xPlayer.source, 'No perms :(')
     end
 
 end, false)
@@ -126,7 +126,7 @@ AddEventHandler('guille_trucker:pay', function(money)
 
     xPlayer.addMoney(money)
 
-    TriggerClientEvent('esx:showNotification', xPlayer.source, 'Por tu trabajo has recibido ' .. money .. '$, puedes volver cuando quieras.')
+    TriggerClientEvent('esx:showNotification', xPlayer.source, 'For your work you received ' .. money .. '$, come back when you want')
 
 end)
 
