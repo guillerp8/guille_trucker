@@ -64,26 +64,28 @@ RegisterCommand('addroute', function(source, args)
     local points = tonumber(args[1])
     local name = args[2]
     local money = tonumber(args[3])
-    if type(points) == 'number' then
-        if type(name) == 'string' then
-            if type(money) == 'number' then
-                MySQL.Async.execute('INSERT INTO truckroutes (points, titulo, owner, money) VALUES (@points, @titulo, @owner, @money)', {
-                    ['@points'] = points,
-                    ['@titulo'] = name,
-                    ['@owner'] = xPlayer.getIdentifier(),
-                    ['@money'] = money,
-                })
-                TriggerClientEvent('esx:showNotification', source, 'Has empezado la creación de una ruta con ' ..points.. ' puntos y con el nombre ' ..name)
-                TriggerClientEvent('guille_trucker:createroute', source, name, points)
+    if xPlayer.getGroup() == 'admin' then
+        if type(points) == 'number' then
+                if type(name) == 'string' then
+                    if type(money) == 'number' then
+                        MySQL.Async.execute('INSERT INTO truckroutes (points, titulo, owner, money) VALUES (@points, @titulo, @owner, @money)', {
+                            ['@points'] = points,
+                            ['@titulo'] = name,
+                            ['@owner'] = xPlayer.getIdentifier(),
+                            ['@money'] = money,
+                        })
+                        TriggerClientEvent('esx:showNotification', source, 'Has empezado la creación de una ruta con ' ..points.. ' puntos y con el nombre ' ..name)
+                        TriggerClientEvent('guille_trucker:createroute', source, name, points)
+                    else
+                        TriggerClientEvent('esx:showNotification', source, 'El valor de money tiene que ser número.')
+                    end
+                else
+                    TriggerClientEvent('esx:showNotification', source, 'El valor de nombre tiene que ser string.')
+                end
             else
-                TriggerClientEvent('esx:showNotification', source, 'El valor de money tiene que ser número.')
+                TriggerClientEvent('esx:showNotification', source, 'El valor de puntos tiene que ser un número')
             end
-        else
-            TriggerClientEvent('esx:showNotification', source, 'El valor de nombre tiene que ser string.')
-        end
-    else
-        TriggerClientEvent('esx:showNotification', source, 'El valor de puntos tiene que ser un número')
-    end
+       end
 end, false)
 
 RegisterServerEvent('guille_startroutes')
