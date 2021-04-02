@@ -49,6 +49,16 @@ function createPed()
     SetBlockingOfNonTemporaryEvents(cped, true)
 end
 
+ShowFloatingHelpNotification = function(msg, coords)
+	
+	SetFloatingHelpTextWorldPosition(1, coords.x, coords.y, coords.z)
+	SetFloatingHelpTextStyle(1, 1, 2, -1, 3, 0)
+	BeginTextCommandDisplayHelp('STRING')
+	AddTextComponentSubstringPlayerName(msg)
+	EndTextCommandDisplayHelp(2, false, true, -1)
+	
+end
+
 function startJob()
     
     local s = true
@@ -59,7 +69,7 @@ function startJob()
 
         if dist < 3 then
             wait = 0
-            ESX.ShowFloatingHelpNotification('Press ~r~E~w~ to speak with the trucker', Config.pedCoords + vector3(0,0,0+2))
+            ShowFloatingHelpNotification('Press ~r~E~w~ to speak with the trucker', Config.pedCoords + vector3(0,0,0+2))
             if IsControlJustPressed(1, 38) then
                 getMenu()
                 s = false
@@ -196,7 +206,7 @@ function routeStartNow(name, money, points, vehicle)
                 print("yes")
                 wait = 0
                 DrawMarker(1, selectedroute[done]['x'], selectedroute[done]['y'], selectedroute[done]['z']-0.95, 0, 0, 0, 0, 0, 0, 5.0000, 5.0000, 0.6001,255,0,0, 200, 0, 0, 0, 0)
-                ESX.ShowFloatingHelpNotification('Press ~r~E~w~ to deliver the ware', vector3(selectedroute[done]['x'], selectedroute[done]['y'], selectedroute[done]['z']))
+                ShowFloatingHelpNotification('Press ~r~E~w~ to deliver the ware', vector3(selectedroute[done]['x'], selectedroute[done]['y'], selectedroute[done]['z']))
                 if dist < 10 and IsVehicleAttachedToTrailer(vehicle)  then
                     if IsControlJustPressed(1, 38) then
                         
@@ -258,7 +268,7 @@ function finishDeliver(x, y, z, money, name, vehicle)
 
         if dist < 5 and IsPedInVehicle(PlayerPedId(), vehicle) then
             wait = 0
-            ESX.ShowFloatingHelpNotification('Press ~r~E~w~ to deliver the truck', Config.truckSpawn)
+            ShowFloatingHelpNotification('Press ~r~E~w~ to deliver the truck', Config.truckSpawn)
             DrawMarker(1, Config.truckSpawn - vector3(0, 0, 0-0.95), 0, 0, 0, 0, 0, 0, 5.0000, 5.0000, 0.6001,255,0,0, 200, 0, 0, 0, 0)
             if IsControlJustPressed(1, 38) then
                 RemoveBlip(routeblip)
@@ -333,7 +343,7 @@ AddEventHandler('guille_trucker:createroute', function(name, points)
             end         
         end
         if created == points then
-            ESX.ShowNotification('Ruta creada correctamente con todos los puntos guardados')
+            ESX.ShowNotification('Route created successfully with all points saved')
             break
         end
         Citizen.Wait(0)
