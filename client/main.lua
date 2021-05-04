@@ -278,6 +278,7 @@ function finishDeliver(x, y, z, money, name, vehicle)
                     show = true; 
                     route = ""; 
                 })
+		done = 1
                 startJob()
                 break
             end
