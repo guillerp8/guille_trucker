@@ -111,7 +111,9 @@ function startRoute(name, money, points)
         show = false; 
         route = name; 
     })
-
+    while IsAnyVehicleNearPoint(Config.truckSpawn, 6.0) do
+        Citizen.Wait(0)
+    end
     ESX.ShowNotification('Wait for the truck arrive')
     Citizen.Wait(900)
     ESX.ShowNotification('If there is a vehicle at the delivery point, it will take longer')
