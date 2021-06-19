@@ -129,7 +129,7 @@ function startRoute(name, money, points)
     end
     local vehicle = CreateVehicle('hauler', Config.truckSpawn, Config.truckHeading, true, true)
     Citizen.Wait(1500)
-    local randomtruck = math.random(1,10)
+    local randomtruck = math.random(1, #Config.Trailers)
     local hash2 = GetHashKey(Config.Trailers[randomtruck])
     RequestModel(hash2)
     print(Config.Trailers[randomtruck])
