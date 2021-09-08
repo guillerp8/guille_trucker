@@ -3,6 +3,10 @@ ESX = nil
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end) 
 
 
+local maxmoney = 1000000  --Change the max money that a trucker can earn on one route
+
+
+
 --[[RegisterCommand('createroute', function(source, args)
     local xPlayer = ESX.GetPlayerFromId(source)
     local name = args[1]
@@ -122,21 +126,38 @@ end, false)
 
 RegisterServerEvent('guille_trucker:pay')
 AddEventHandler('guille_trucker:pay', function(money)
-    local xPlayer = ESX.GetPlayerFromId(source)
-
-    xPlayer.addMoney(money)
-
-    TriggerClientEvent('esx:showNotification', xPlayer.source, 'For your work you received ' .. money .. '$, come back when you want')
-
+    local _source = source
+        local xPlayer = ESX.GetPlayerFromId(_source)
+    if xPlayer then
+        if money <= maxmoney then
+            local ped = GetPlayerPed(_source)
+            if ped ~= -1 then
+                local coords = GetEntityCoords(ped)
+                if #(coords - Config.truckSpawn) < 30.0 then
+                    xPlayer.addMoney(money)
+                    TriggerClientEvent('esx:showNotification', xPlayer.source, 'For your work you received ' .. money .. '$, come back when you want')
+                else
+                    -- Insert Your ban event
+                    print("A player tried to trigger paid event far from a secure position ")
+                end
+            end
+        else
+            -- Insert Your ban event
+            print("Money amount is higher than Max Money selected") 
+        end  
+    end
 end)
+
 
 RegisterServerEvent('guille_trucker:addpointtoroute')
 AddEventHandler('guille_trucker:addpointtoroute', function(name, point)
     local xPlayer = ESX.GetPlayerFromId(source)
     local position = xPlayer.getCoords()
-    MySQL.Async.execute('INSERT INTO truckerroutes (name, coords, point) VALUES (@name, @coords, @point)', {
-        ['@name'] = name,
-        ['@coords'] = json.encode(position),
-        ['@point'] = point,
-    })
+    if xPlayer.getGroup() == 'admin' then
+        MySQL.Async.execute('INSERT INTO truckerroutes (name, coords, point) VALUES (@name, @coords, @point)', {
+            ['@name'] = name,
+            ['@coords'] = json.encode(position),
+            ['@point'] = point,
+        })
+    end
 end)
